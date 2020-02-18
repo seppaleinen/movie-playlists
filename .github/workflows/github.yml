@@ -17,6 +17,8 @@ jobs:
       run: pip install -r backend/importer/requirements.txt
     - name: Run tests
       run: ./backend/importer/manage.py test
+    - name: Build docker dev image
+      run: docker build -f backend/importer/Dockerfile -t seppaleinen/movies_backend_importer:dev backend/importer
 
   build-frontend:
     runs-on: ubuntu-latest
@@ -27,6 +29,8 @@ jobs:
       run: npm install --prefix frontend/
     - name: Run tests
       run: npm run ci-test --prefix frontend/
+    - name: Build docker dev image
+      run: docker build -f frontend/Dockerfile -t seppaleinen/movies_webapp:dev frontend/
 
   integration-tests:
     runs-on: ubuntu-latest
