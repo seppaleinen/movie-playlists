@@ -42,4 +42,5 @@ jobs:
       run: docker-compose -f docker-compose.yml -f docker-compose.ci.yml pull
     - name: Start containers
       run: docker-compose -f docker-compose.yml -f docker-compose.ci.yml up -d
-
+    - name: Wait for services to start
+      run: for i in {1..5}; do wget --spider 'http://localhost:80' >/dev/null && wget --spider 'http://localhost:8000/health' >/dev/null && exit 0; sleep 1; done && exit 1
