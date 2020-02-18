@@ -57,9 +57,9 @@ def __download(url):
         print("Downloading {url}".format(url=url))
         for i in contents:
             try:
-                loaded = json.loads(i.replace('  ',' ').replace(' "','"'), strict=False)
+                loaded = json.loads(i, strict=False)
             except Exception as e:
-                print(i)
+                print("Could not parse json string: %s" % i)
             if 'adult' in loaded and loaded['adult'] is False:
                 dict_array.append(loaded)
             elif 'video' not in loaded:
