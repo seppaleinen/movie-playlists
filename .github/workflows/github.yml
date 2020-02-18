@@ -24,7 +24,7 @@ jobs:
         dockerhub_password: ${{ secrets.dockerhub_password }}
       run: |
         echo "$dockerhub_password" | docker login -u "seppaleinen" --password-stdin
-        docker docker push seppaleinen/movies_backend_importer:dev
+        docker push seppaleinen/movies_backend_importer:dev
  
 
   build-frontend:
@@ -43,7 +43,7 @@ jobs:
         dockerhub_password: ${{ secrets.dockerhub_password }}
       run: |
         echo "$dockerhub_password" | docker login -u "seppaleinen" --password-stdin
-        docker docker push seppaleinen/movies_webapp:dev
+        docker push seppaleinen/movies_webapp:dev
 
   integration-tests:
     runs-on: ubuntu-latest
