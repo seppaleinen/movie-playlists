@@ -65,6 +65,10 @@ jobs:
     needs: integration-tests
 
     steps:
+    - name: Get latest dev images
+      run: |
+        docker pull seppaleinen/movies_backend_importer:dev
+        docker pull seppaleinen/movies_webapp:dev
     - name: Tag as latest and push to dockerhub
       env:
         dockerhub_password: ${{ secrets.dockerhub_password }}
