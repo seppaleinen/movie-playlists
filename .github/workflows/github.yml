@@ -39,5 +39,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Pull newest docker images
-      run: echo "Do stuff" 
+      run: docker-compose -f docker-compose.yml -f docker-compose.ci.yml pull
+    - name: Start containers
+      run: docker-compose -f docker-compose.yml -f docker-compose.ci.yml up -d
+    - 
 
