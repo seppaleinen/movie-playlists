@@ -6,68 +6,35 @@ def fetch_production_companies():
     yesterday = __get_date()
     dict_array = __download("http://files.tmdb.org/p/exports/production_company_ids_{date}.json.gz".format(date=yesterday))
     wrapper = __split_into_create_update_or_delete(ProductionCompanyIds, dict_array)
-    try:
-        print('Persisting...')
-        for chunk in __chunks(wrapper['all_new_entities'], 100):
-            ProductionCompanyIds.objects.bulk_create(chunk)
-        print("Deleting unfetched movies not in tmdb anymore")
-        for id_to_delete in wrapper['ids_to_delete']:
-            to_be_deleted = ProductionCompanyIds.objects.get(pk=id_to_delete)
-            to_be_deleted.deleted = True
-            to_be_deleted.save()
-        return "Imported: %s, and deleted: %s, out of: %s" % (len(wrapper['all_new_entities']), len(wrapper['ids_to_delete']), wrapper['total_size'])
-    except Exception as e:
-        print("Error: %s" % e)
-        return "Exception: %s" % e	
+    return persist(ProductionCompanyIds, wrapper)
 
 
 def fetch_keywords():
     yesterday = __get_date()
     dict_array = __download("http://files.tmdb.org/p/exports/keyword_ids_{date}.json.gz".format(date=yesterday))
     wrapper = __split_into_create_update_or_delete(KeywordIds, dict_array)
-    try:
-        print('Persisting...')
-        for chunk in __chunks(wrapper['all_new_entities'], 100):
-            KeywordIds.objects.bulk_create(chunk)
-        print("Deleting unfetched movies not in tmdb anymore")
-        for id_to_delete in wrapper['ids_to_delete']:
-            to_be_deleted = KeywordIds.objects.get(pk=id_to_delete)
-            to_be_deleted.deleted = True
-            to_be_deleted.save()
-        return "Imported: %s, and deleted: %s, out of: %s" % (len(wrapper['all_new_entities']), len(wrapper['ids_to_delete']), wrapper['total_size'])
-    except Exception as e:
-        print("Error: %s" % e)
-        return "Exception: %s" % e  
+    return persist(KeywordIds, wrapper)
 
 
 def fetch_persons():
     yesterday = __get_date()
     dict_array = __download("http://files.tmdb.org/p/exports/person_ids_{date}.json.gz".format(date=yesterday))
     wrapper = __split_into_create_update_or_delete(PersonIds, dict_array)
-    print(wrapper)
-    try:
-        print('Persisting...')
-        for chunk in __chunks(wrapper['all_new_entities'], 100):
-            PersonIds.objects.bulk_create(chunk)
-        print("Deleting unfetched movies not in tmdb anymore")
-        for id_to_delete in wrapper['ids_to_delete']:
-            to_be_deleted = PersonIds.objects.get(pk=id_to_delete)
-            to_be_deleted.deleted = True
-            to_be_deleted.save()
-        return "Imported: %s, and deleted: %s, out of: %s" % (len(wrapper['all_new_entities']), len(wrapper['ids_to_delete']), wrapper['total_size'])
-    except Exception as e:
-        print("Error: %s" % e)
-        return "Exception: %s" % e  
+    return persist(PersonIds, wrapper)
 
 
 def fetch_movies():
     yesterday = __get_date()
     dict_array = __download("http://files.tmdb.org/p/exports/movie_ids_{date}.json.gz".format(date=yesterday))
     wrapper = __split_into_create_update_or_delete(MovieIds, dict_array)
+    return persist(MovieIds, wrapper)
+
+
+def persist(entity, wrapper):
     try:
         print('Persisting...')
         for chunk in __chunks(wrapper['all_new_entities'], 100):
-            MovieIds.objects.bulk_create(chunk)
+            entity.objects.bulk_create(chunk)
         print("Deleting unfetched movies not in tmdb anymore")
         for id_to_delete in wrapper['ids_to_delete']:
             to_be_deleted = MovieIds.objects.get(pk=id_to_delete)
@@ -76,7 +43,8 @@ def fetch_movies():
         return "Imported: %s, and deleted: %s, out of: %s" % (len(wrapper['all_new_entities']), len(wrapper['ids_to_delete']), wrapper['total_size'])
     except Exception as e:
         print("Error: %s" % e)
-        return "Exception: %s" % e  
+        return "Exception: %s" % e
+
 
 
 def __download(url):
@@ -88,7 +56,10 @@ def __download(url):
         dict_array = []
         print("Downloading {url}".format(url=url))
         for i in contents:
-            loaded = json.load(i)
+            try:
+                loaded = json.loads(i.replace('  ',' ').replace(' "','"'), strict=False)
+            except Exception as e:
+                print(i)
             if 'adult' in loaded and loaded['adult'] is False:
                 dict_array.append(loaded)
             elif 'video' not in loaded:
