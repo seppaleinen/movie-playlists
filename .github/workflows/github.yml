@@ -28,9 +28,7 @@ jobs:
       run: npm run ci-test --prefix frontend/
   integration-tests:
     runs-on: ubuntu-latest
-    needs:
-    - build-backend-importer
-    - build-frontend
+    needs: [build-backend-importer, build-frontend]
     steps:
     - name: Pull newest docker images
       run: echo "Do stuff" 
