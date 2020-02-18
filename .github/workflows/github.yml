@@ -20,8 +20,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Run frontend tests
-      run: |
-        npm install --prefix frontend/
-        npm run ci-test --prefix frontend/
+    - name: Install dependencies
+      run: npm install --prefix frontend/
+    - name: Run tests
+      run: npm run ci-test --prefix frontend/
 
