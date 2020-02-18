@@ -13,9 +13,8 @@ jobs:
       with:
         python-version: 3.x
         architecture: x64
-    - run: |
-        pip install -r backend/importer/requirements.txt
-        ./backend/importer/manage.py test
+    - run: pip install -r backend/importer/requirements.txt
+    - run: ./backend/importer/manage.py test
   build-frontend:
     runs-on: ubuntu-latest
 
