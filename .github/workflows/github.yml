@@ -19,6 +19,13 @@ jobs:
       run: ./backend/importer/manage.py test
     - name: Build docker dev image
       run: docker build -f backend/importer/Dockerfile -t seppaleinen/movies_backend_importer:dev backend/importer
+    - name: Push docker image
+      env:
+        dockerhub_password: ${{ secrets.dockerhub_password }}
+      run: |
+        echo "$dockerhub_password" | docker login -u "seppaleinen" --password-stdin
+        docker docker push seppaleinen/movies_backend_importer:dev
+ 
 
   build-frontend:
     runs-on: ubuntu-latest
@@ -31,6 +38,12 @@ jobs:
       run: npm run ci-test --prefix frontend/
     - name: Build docker dev image
       run: docker build -f frontend/Dockerfile -t seppaleinen/movies_webapp:dev frontend/
+    - name: Push docker image
+      env:
+        dockerhub_password: ${{ secrets.dockerhub_password }}
+      run: |
+        echo "$dockerhub_password" | docker login -u "seppaleinen" --password-stdin
+        docker docker push seppaleinen/movies_webapp:dev
 
   integration-tests:
     runs-on: ubuntu-latest
