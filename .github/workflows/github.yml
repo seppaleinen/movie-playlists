@@ -9,9 +9,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Run a one-line script
-      run: echo Hello, world!
-    - name: Run a multi-line script
+    - name: Run backend tests
       run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+        pip install -r backend/importer/requirements.txt
+        ./backend/importer/manage.py test
+    - name: Run frontend tests
+      run: |
+        npm install --prefix frontend/
+        npm run test --prefix frontend/
