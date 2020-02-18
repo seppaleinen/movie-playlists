@@ -3,8 +3,7 @@ name: CI
 on: [push]
 
 jobs:
-  build:
-
+  build-backend-importer:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,7 +16,13 @@ jobs:
     - run: |
         pip install -r backend/importer/requirements.txt
         ./backend/importer/manage.py test
+  build-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
     - name: Run frontend tests
       run: |
         npm install --prefix frontend/
-        npm run test --prefix frontend/
+        npm run ci-test --prefix frontend/
+
