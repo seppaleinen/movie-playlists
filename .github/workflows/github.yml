@@ -16,7 +16,7 @@ jobs:
     - name: Install dependencies
       run: pip install -r backend/importer/requirements.txt
     - name: Run tests
-      run: ./backend/importer/manage.py test
+      run: ./backend/importer/manage.py behave
     - name: Build docker dev image
       run: docker build -f backend/importer/Dockerfile -t seppaleinen/movies_backend_importer:dev backend/importer
     - name: Push docker image

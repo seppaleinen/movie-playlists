@@ -58,12 +58,13 @@ def __download(url):
         for i in contents:
             try:
                 loaded = json.loads(i, strict=False)
+                if 'adult' in loaded and loaded['adult'] is False:
+                    dict_array.append(loaded)
+                elif 'video' not in loaded:
+                    dict_array.append(loaded)
             except Exception as e:
                 print("Could not parse json string: %s" % i)
-            if 'adult' in loaded and loaded['adult'] is False:
-                dict_array.append(loaded)
-            elif 'video' not in loaded:
-                dict_array.append(loaded)
+
         return dict_array
     else:
         return []
