@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:10.5-alpine
+    volumes:
+      - pgdata:/var/lib/postgresql
+      - ./postgres-data:/tmp/
+    ports:
+      - "5432:5432"
+  backend:
+    image: seppaleinen/movies_backend_importer
+    build: backend/importer/
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    restart: unless-stopped
+    environment:
+      - TMDB_API=${TMDB_API}
+      - SENTRY_URL=${SENTRY_URL}
+  webapp:
+    image: seppaleinen/movies_webapp
+    build: frontend/
+    ports:
+      - "80:80"
+volumes:
+  pgdata:
