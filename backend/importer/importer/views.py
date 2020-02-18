@@ -17,3 +17,7 @@ def fetch_daily_persons(request):
 
 def fetch_daily_movies(request):
 	return HttpResponse(daily_exports.fetch_movies())
+
+
+def health(request):
+	return HttpResponse("Status: OK")
