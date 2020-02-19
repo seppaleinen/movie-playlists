@@ -37,7 +37,7 @@ def persist(entity, wrapper):
             entity.objects.bulk_create(chunk)
         print("Deleting unfetched movies not in tmdb anymore")
         for id_to_delete in wrapper['ids_to_delete']:
-            to_be_deleted = MovieIds.objects.get(pk=id_to_delete)
+            to_be_deleted = entity.objects.get(pk=id_to_delete)
             to_be_deleted.deleted = True
             to_be_deleted.save()
         return "Imported: %s, and deleted: %s, out of: %s" % (len(wrapper['all_new_entities']), len(wrapper['ids_to_delete']), wrapper['total_size'])
@@ -57,11 +57,14 @@ def __download(url):
         print("Downloading {url}".format(url=url))
         for i in contents:
             try:
-                loaded = json.loads(i, strict=False)
-                if 'adult' in loaded and loaded['adult'] is False:
-                    dict_array.append(loaded)
-                elif 'video' not in loaded:
-                    dict_array.append(loaded)
+                if not i:
+                    pass
+                else:
+                    loaded = json.loads(i, strict=False)
+                    if 'adult' in loaded and loaded['adult'] is False:
+                        dict_array.append(loaded)
+                    elif 'video' not in loaded:
+                        dict_array.append(loaded)
             except Exception as e:
                 print("Could not parse json string: %s" % i)
 
