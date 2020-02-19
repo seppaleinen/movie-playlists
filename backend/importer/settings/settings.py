@@ -39,6 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'importer',
     'behave_django',
+    'django_crontab',
+]
+
+CRONJOBS = [
+    ('0 9 * * *', 'importer.daily_exports.fetch_all', '>> /tmp/scheduled_job.log')
 ]
 
 MIDDLEWARE = [
@@ -100,7 +105,7 @@ else:
 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': True,
+    'disable_existing_loggers': False,
     'formatters': {
         'simple': {
             'format': '%(asctime)-20s %(levelname)-5s %(module)-15s %(message)s',

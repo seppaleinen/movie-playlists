@@ -5,6 +5,15 @@ from importer.models import ProductionCompanyIds, KeywordIds, PersonIds, MovieId
 logger = logging.getLogger(__name__)
 
 
+def fetch_all():
+    # logger framework doesn't work for crond right now.
+    print("Fetching TMDB daily exports")
+    print("Production Companies Result: %s" % fetch_production_companies())
+    print("Keywords Result: %s" % fetch_keywords())
+    print("Persons Result: %s" % fetch_persons())
+    print("Movies Result: %s" % fetch_movies())
+
+
 def fetch_production_companies():
     yesterday = __get_date()
     dict_array = __download("http://files.tmdb.org/p/exports/production_company_ids_{date}.json.gz".format(date=yesterday), 'production_companies.json.gz')
