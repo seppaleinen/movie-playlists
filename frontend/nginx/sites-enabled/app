@@ -1,6 +1,10 @@
+upstream backend {
+    server backend:8000;
+}
+
 server {
     listen 80;
-    server_name worldinmovies;
+    server_name movie-playlist;
     charset utf-8;
     root /var/www/app/;
 
@@ -21,4 +25,22 @@ server {
 
         alias /var/www/app/static;
     }
+
+    # https://github.com/docker/compose/issues/3412
+    resolver 127.0.0.11 valid=300s;
+    resolver_timeout 10s;
+
+    location /backend {
+        return 302 /backend/;
+    }
+
+    location /backend/ {
+        set $backend backend;
+
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+
+        proxy_pass http://$backend/;
+    }
+
 }
