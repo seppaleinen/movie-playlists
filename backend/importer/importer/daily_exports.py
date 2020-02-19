@@ -1,5 +1,8 @@
-import datetime, requests, gzip, json
+import datetime, requests, gzip, json, logging
 from importer.models import ProductionCompanyIds, KeywordIds, PersonIds, MovieIds
+
+
+logger = logging.getLogger(__name__)
 
 
 def fetch_production_companies():
@@ -32,17 +35,17 @@ def fetch_movies():
 
 def persist(entity, wrapper):
     try:
-        print('Persisting...')
+        logger.info('Persisting...')
         for chunk in __chunks(wrapper['all_new_entities'], 100):
             entity.objects.bulk_create(chunk)
-        print("Deleting unfetched movies not in tmdb anymore")
+        logger.info("Deleting unfetched movies not in tmdb anymore")
         for id_to_delete in wrapper['ids_to_delete']:
             to_be_deleted = entity.objects.get(pk=id_to_delete)
             to_be_deleted.deleted = True
             to_be_deleted.save()
         return "Imported: %s, and deleted: %s, out of: %s" % (len(wrapper['all_new_entities']), len(wrapper['ids_to_delete']), wrapper['total_size'])
     except Exception as e:
-        print("Error: %s" % e)
+        logger.error("Error: %s" % e)
         return "Exception: %s" % e
 
 
@@ -54,7 +57,7 @@ def __download(url, tmp_file):
             f.write(response.content)
         contents = __unzip_file(tmp_file)
         dict_array = []
-        print("Downloading {url}".format(url=url))
+        logger.info("Downloading {url}".format(url=url))
         for i in contents:
             try:
                 if not i: # New str.split('\n') passes through empty lines which str.splitlines took care of.
@@ -66,7 +69,7 @@ def __download(url, tmp_file):
                     elif 'video' not in loaded:
                         dict_array.append(loaded)
             except Exception as e:
-                print("Could not parse json string: %s" % i)
+                logger.error("Could not parse json string: %s" % i)
 
         return dict_array
     else:
@@ -79,7 +82,7 @@ def __split_into_create_update_or_delete(entity, dicts):
     all_unfetched_ids = set(entity.objects.filter(fetched=False).all().values_list('id', flat=True))
     all_ids = set()
     wrapper['all_new_entities'] = []
-    print("Splitting into create/delete")
+    logger.info("Splitting into create/delete")
     for dic in dicts:
         all_ids.add(dic['id'])
         if dic['id'] not in already_persisted_ids:
@@ -117,7 +120,7 @@ def __log_progress(iterable, message, length=None):
         temp_perc = int(100 * count / total_count)
         if percentage != temp_perc:
             percentage = temp_perc
-            print("{time} - {message} data handling in progress - {percentage}%".format(
+            logger.info("{time} - {message} data handling in progress - {percentage}%".format(
                 time=datetime.datetime.now().strftime(datetime_format),
                 message=message, 
                 percentage=percentage))

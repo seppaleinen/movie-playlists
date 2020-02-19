@@ -98,6 +98,32 @@ else:
         }
     }
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'simple': {
+            'format': '%(asctime)-20s %(levelname)-5s %(module)-15s %(message)s',
+            
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+        'importer': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+    },
+}
 
 
 # Password validation
