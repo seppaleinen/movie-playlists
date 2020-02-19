@@ -90,7 +90,8 @@ def __unzip_file(file_name):
     f = gzip.open(file_name, 'rt', encoding='utf-8')
     file_content = f.read()
     f.close()
-    return file_content.splitlines()
+    # there are names with line separators (<U+2028>) and line paragraphs (<U+2029>) which doesn't work so well with splitlines.
+    return file_content.split('\n') 
 
 
 def __get_date():
