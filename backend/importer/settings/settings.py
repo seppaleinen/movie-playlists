@@ -122,6 +122,10 @@ LOGGING = {
             'handlers': ['console'],
             'level': 'INFO',
         },
+        'gunicorn': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
     },
 }
 
