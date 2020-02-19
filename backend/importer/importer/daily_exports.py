@@ -4,28 +4,28 @@ from importer.models import ProductionCompanyIds, KeywordIds, PersonIds, MovieId
 
 def fetch_production_companies():
     yesterday = __get_date()
-    dict_array = __download("http://files.tmdb.org/p/exports/production_company_ids_{date}.json.gz".format(date=yesterday))
+    dict_array = __download("http://files.tmdb.org/p/exports/production_company_ids_{date}.json.gz".format(date=yesterday), 'production_companies.json.gz')
     wrapper = __split_into_create_update_or_delete(ProductionCompanyIds, dict_array)
     return persist(ProductionCompanyIds, wrapper)
 
 
 def fetch_keywords():
     yesterday = __get_date()
-    dict_array = __download("http://files.tmdb.org/p/exports/keyword_ids_{date}.json.gz".format(date=yesterday))
+    dict_array = __download("http://files.tmdb.org/p/exports/keyword_ids_{date}.json.gz".format(date=yesterday), 'keywords.json.gz')
     wrapper = __split_into_create_update_or_delete(KeywordIds, dict_array)
     return persist(KeywordIds, wrapper)
 
 
 def fetch_persons():
     yesterday = __get_date()
-    dict_array = __download("http://files.tmdb.org/p/exports/person_ids_{date}.json.gz".format(date=yesterday))
+    dict_array = __download("http://files.tmdb.org/p/exports/person_ids_{date}.json.gz".format(date=yesterday), 'persons.json.gz')
     wrapper = __split_into_create_update_or_delete(PersonIds, dict_array)
     return persist(PersonIds, wrapper)
 
 
 def fetch_movies():
     yesterday = __get_date()
-    dict_array = __download("http://files.tmdb.org/p/exports/movie_ids_{date}.json.gz".format(date=yesterday))
+    dict_array = __download("http://files.tmdb.org/p/exports/movie_ids_{date}.json.gz".format(date=yesterday), 'movies.json.gz')
     wrapper = __split_into_create_update_or_delete(MovieIds, dict_array)
     return persist(MovieIds, wrapper)
 
@@ -47,12 +47,12 @@ def persist(entity, wrapper):
 
 
 
-def __download(url):
+def __download(url, tmp_file):
     response = requests.get(url)
     if response.status_code == 200:
-        with open('data.json.gz', 'wb') as f:
+        with open(tmp_file, 'wb') as f:
             f.write(response.content)
-        contents = __unzip_file('data.json.gz')
+        contents = __unzip_file(tmp_file)
         dict_array = []
         print("Downloading {url}".format(url=url))
         for i in contents:
