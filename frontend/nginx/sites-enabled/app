@@ -1,7 +1,3 @@
-upstream backend {
-    server backend:8000;
-}
-
 server {
     listen 80;
     server_name movie-playlist;
@@ -34,13 +30,14 @@ server {
         return 302 /backend/;
     }
 
-    location /backend/ {
-        set $backend backend;
-
+    # https://serverfault.com/questions/562756/how-to-remove-the-path-with-an-nginx-proxy-pass/562850#562850
+    location ~ ^/backend/?((?<=/).*)?$ {
+        set $backend backend:8000;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
-
-        proxy_pass http://$backend/;
+        proxy_pass http://$backend/$1$is_args$args;
+        proxy_redirect http://$backend/ /backend/;
     }
+
 
 }

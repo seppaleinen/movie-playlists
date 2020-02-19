@@ -4,4 +4,4 @@ Feature: Health
     Scenario: Calling the health endpoint
         When I call "/health"
         Then the server should return status 200
-        And a response like "Status: OK"
+        And a response like "{"Status": "OK"}"

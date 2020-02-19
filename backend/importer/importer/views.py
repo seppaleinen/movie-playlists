@@ -20,4 +20,4 @@ def fetch_daily_movies(request):
 
 
 def health(request):
-	return HttpResponse("Status: OK")
+	return HttpResponse('{"Status": "OK"}')
