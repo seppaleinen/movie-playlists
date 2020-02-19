@@ -57,7 +57,7 @@ def __download(url):
         print("Downloading {url}".format(url=url))
         for i in contents:
             try:
-                if not i:
+                if not i: # New str.split('\n') passes through empty lines which str.splitlines took care of.
                     pass
                 else:
                     loaded = json.loads(i, strict=False)
