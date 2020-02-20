@@ -12,6 +12,11 @@ services:
     image: redis:5-alpine
     ports:
       - "6379:6379"
+  flower: # Celery Monitor
+    image: mher/flower
+    command: ["flower", "--broker=redis://redis:6379/0", "--port=8888"]  
+    ports:  
+      - 8888:8888  
   backend:
     image: seppaleinen/movies_backend_importer
     build: backend/importer/

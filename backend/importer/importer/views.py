@@ -26,5 +26,4 @@ def import_keywords(request):
 
 def health(request):
     asd = shared_tasks.build_something.delay()
-    print(asd.get())
     return HttpResponse("Status: OK")
