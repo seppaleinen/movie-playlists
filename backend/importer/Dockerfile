@@ -18,5 +18,6 @@ ADD . /app
 WORKDIR /app
 
 RUN python manage.py crontab add
+RUN celery -A settings.celery worker -l INFO -E --detach
 
-ENTRYPOINT ["/bin/sh", "-c", "crond & python manage.py makemigrations && python manage.py migrate && gunicorn --config=gunicorn.config.py settings.wsgi"]
+ENTRYPOINT ["/bin/sh", "-c", "celery -A settings.celery worker -l INFO -E --detach && crond & python manage.py makemigrations && python manage.py migrate && gunicorn --config=gunicorn.config.py settings.wsgi"]

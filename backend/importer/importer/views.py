@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, StreamingHttpResponse
 from importer import daily_exports, tmdb_fetcher
+from importer import shared_tasks
 
 
 def fetch_daily_production_companies(request):
@@ -24,4 +25,6 @@ def import_keywords(request):
 
 
 def health(request):
-	return HttpResponse("Status: OK")
+    asd = shared_tasks.build_something.delay()
+    print(asd.get())
+    return HttpResponse("Status: OK")
