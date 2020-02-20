@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, StreamingHttpResponse
 from importer import daily_exports, tmdb_fetcher
 
 
@@ -20,7 +20,7 @@ def fetch_daily_movies(request):
 
 
 def import_keywords(request):
-    return HttpResponse(tmdb_fetcher.fetch_keywords())
+    return StreamingHttpResponse(tmdb_fetcher.fetch_keywords())
 
 
 def health(request):

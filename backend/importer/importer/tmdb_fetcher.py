@@ -1,33 +1,32 @@
-import os, requests, json
+import os, requests, json, logging
 from importer import models
 
 api_key = os.getenv('TMDB_API', 'test')
-
+logger = logging.getLogger(__name__)
 
 def fetch_keywords():
     for keyword_id in models.KeywordIds.objects.all().values_list('id', flat=True):
-        resp = __fetch_keyword_details(keyword_id)
-        url = "https://api.themoviedb.org/3/keyword/{keyword_id}/movies?api_key={api_key}&language=en-US&include_adult=false".format(keyword_id=keyword_id, api_key=api_key)
-        response = requests.get(url)
-        if response.status_code == 200:
-            data = json.loads(response.content)
-            page = data['page']
-            total_pages = data['total_pages']
-            ids = [a['id'] for a in data['results']]
-            print("Page: {page) - {total}. Ids: {ids}".format(page=page, total=total_pages, ids=ids))
-        else:
-            raise Exception("%s - %s" % (response.status_code, response.content))
+        yield from  __fetch_keyword_details(keyword_id)
         
 def __fetch_keyword_details(keyword_id, page=1):
-    url = "https://api.themoviedb.org/3/keyword/{keyword_id}/movies?api_key={api_key}&language=en-US&include_adult=false&page={page}".format(keyword_id=keyword_id, api_key=api_key, page=page)
+    url = "https://api.themoviedb.org/3/discover/movie"\
+        "?api_key={api_key}"\
+        "&language=en-US"\
+        "&sort_by=popularity.desc"\
+        "&include_adult=false"\
+        "&include_video=false"\
+        "&page={page}"\
+        "&with_keywords={keyword_id}".format(keyword_id=keyword_id, api_key=api_key, page=page)
     response = requests.get(url)
     if response.status_code == 200:
         data = json.loads(response.content)
         page = data['page']
         total_pages = data['total_pages']
         ids = [a['id'] for a in data['results']]
-        print("Page: {keyword}: {page} - {total}. Ids: {ids}".format(keyword=keyword_id, page=page, total=total_pages, ids=ids))
-        #if int(page) < int(total_pages):
-        #    return __fetch_keyword_details(keyword_id, ++page)
+        logger.info("Keyword: {keyword}: Page: {page} - {total}. Ids: {ids}".format(keyword=keyword_id, page=page, total=total_pages, ids=ids))
+        yield {"keyword_id": keyword_id, "movie_ids": ids}
+        if int(page) < int(total_pages):
+            yield from __fetch_keyword_details(keyword_id, int(page) + 1)
     else:
+        logger.error("Could not get response calling %s" % url)
         raise Exception("%s - %s" % (response.status_code, response.content))
