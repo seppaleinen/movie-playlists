@@ -24,6 +24,10 @@ def import_keywords(request):
     return StreamingHttpResponse(tmdb_fetcher.fetch_keywords())
 
 
+def import_movies(request):
+    return HttpResponse(tmdb_fetcher.fetch_movies())
+
+
 def health(request):
     asd = shared_tasks.build_something.delay()
     return HttpResponse("Status: OK")

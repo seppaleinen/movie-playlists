@@ -10,7 +10,7 @@ def given_mock(context, method, url, body, status, content_type):
     mock['method'] = method
     mock['url'] = url
     with open("%s/%s" % (BASE_DIR, body), 'rb') as file:
-    	mock['body'] = __gzip_string(file.read())
+        mock['body'] = __gzip_string(file.read())
     mock['status'] = int(status)
     mock['content_type'] = content_type
     context.mocks.append(mock)
@@ -34,7 +34,7 @@ def use_django_client(context, url):
         for mock in context.mocks:
             rsps.add(mock['method'], mock['url'], body=mock['body'], status=mock['status'], content_type=mock['content_type'], stream=True)
         with freeze_time("2020-02-18"):
-        	context.response = context.test.client.get(url)
+            context.response = context.test.client.get(url)
 
 
 

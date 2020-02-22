@@ -95,3 +95,40 @@ class MovieIds(models.Model):
         	fetched=self.fetched, 
         	deleted=self.deleted)
 
+
+class Movie(models.Model):
+    id = models.IntegerField(db_index=True, primary_key=True)
+    original_title = models.CharField(max_length=500)
+    popularity = models.DecimalField(decimal_places=3, max_digits=10)
+    fetched = models.BooleanField(default=False)
+    budget = models.BigIntegerField(null=True, blank=True)
+    imdb_id = models.CharField(max_length=30, null=True, db_index=True, unique=True)
+    original_language = models.CharField(max_length=30, null=True, blank=True)
+    overview = models.TextField(null=True, blank=True)
+    poster_path = models.CharField(max_length=40, null=True, blank=True)
+    release_date = models.CharField(max_length=10, null=True, blank=True)
+    revenue = models.BigIntegerField(null=True, blank=True)
+    runtime = models.IntegerField(null=True, blank=True)
+    vote_average = models.DecimalField(decimal_places=1, max_digits=10, null=True, blank=True)
+    vote_count = models.IntegerField(null=True, blank=True)
+    imdb_vote_average = models.DecimalField(decimal_places=1, max_digits=10, null=True, blank=True)
+    imdb_vote_count = models.IntegerField(null=True, blank=True)
+    raw_response = models.TextField(null=True, blank=True)
+
+
+class Genre(models.Model):
+    movies = models.ManyToManyField(Movie, related_name='genres')
+    id = models.IntegerField(primary_key=True)
+    name = models.TextField()
+
+    def __str__(self):
+        return "id:{id}, name:{name}".format(id=self.id, name=self.name)
+
+
+class SpokenLanguage(models.Model):
+    movies = models.ManyToManyField(Movie, related_name='spoken_languages')
+    iso_639_1 = models.CharField(max_length=4, unique=True)
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return "iso:{iso}, name:{name}".format(iso=self.iso_639_1, name=self.name)

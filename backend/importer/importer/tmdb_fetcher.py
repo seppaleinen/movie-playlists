@@ -1,13 +1,27 @@
 import os, requests, json, logging
-from importer import models
+from importer import models, shared_tasks
 
 api_key = os.getenv('TMDB_API', 'test')
 logger = logging.getLogger(__name__)
 
 def fetch_keywords():
-    for keyword_id in models.KeywordIds.objects.filter(fetched=False).values_list('id', flat=True):
+    for keyword_id in models.KeywordIds.objects.filter(fetched=False, deleted=False).values_list('id', flat=True):
         yield from  __fetch_keyword_details(keyword_id)
+
+
+def fetch_movies():
+    #shared_tasks.fetch_movie.chunks(iter(models.MovieIds.objects.filter(fetched=False, deleted=False).values_list('id', flat=True)), 100).apply_async()
+    #for chunk in __chunks(models.MovieIds.objects.filter(fetched=False, deleted=False).values_list('id', flat=True), 100):
+    #    shared_tasks.fetch_movie.delay(chunk)
+    return "All is in queue"
         
+
+def __chunks(__list, n):
+    """Yield successive n-sized chunks from list."""
+    for i in range(0, len(__list), n):
+        yield __list[i:i + n]
+
+
 def __fetch_keyword_details(keyword_id, page=1):
     url = "https://api.themoviedb.org/3/discover/movie"\
         "?api_key={api_key}"\

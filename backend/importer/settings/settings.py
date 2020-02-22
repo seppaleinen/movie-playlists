@@ -98,17 +98,7 @@ if environment == 'DOCKER':
             'CONN_MAX_AGE': 500,
         }
     }
-elif environment == 'localhost':
-    CELERY_BROKER_URL = 'redis://localhost:6379'
-    CELERY_RESULT_BACKEND = 'redis://localhost:6379'
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'data.db'),
-            'CONN_MAX_AGE': 500,
-        }
-    }
-else:
+elif 'behave' in sys.argv:
     BROKER_BACKEND = 'memory'
     CELERY_TASK_ALWAYS_EAGER = True
     CELERY_TASK_EAGER_PROPAGATES = True
@@ -116,6 +106,16 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': os.path.join(BASE_DIR, 'test.db'),
+            'CONN_MAX_AGE': 500,
+        }
+    }    
+else:
+    CELERY_BROKER_URL = 'redis://localhost:6379'
+    CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'data.db'),
             'CONN_MAX_AGE': 500,
         }
     }
