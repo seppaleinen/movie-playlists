@@ -5,7 +5,7 @@ api_key = os.getenv('TMDB_API', 'test')
 logger = logging.getLogger(__name__)
 
 def fetch_keywords():
-    for keyword_id in models.KeywordIds.objects.all().values_list('id', flat=True):
+    for keyword_id in models.KeywordIds.objects.filter(fetched=False).values_list('id', flat=True):
         yield from  __fetch_keyword_details(keyword_id)
         
 def __fetch_keyword_details(keyword_id, page=1):

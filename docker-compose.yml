@@ -33,7 +33,7 @@ services:
     depends_on:
       - db
       - backend
-    entrypoint: celery -A settings.celery worker -l INFO -E
+    entrypoint: celery -A settings.celery worker -l INFO -E --pool=gevent --concurrency=100
   webapp:
     image: seppaleinen/movies_webapp
     build: frontend/

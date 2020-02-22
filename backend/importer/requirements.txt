@@ -9,6 +9,7 @@ django-crontab
 fuzzywuzzy[speedup]
 celery
 redis
+gevent 
 
 # For tests
 responses>=0.10.6
