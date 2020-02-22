@@ -28,6 +28,12 @@ services:
     environment:
       - TMDB_API=${TMDB_API}
       - SENTRY_URL=${SENTRY_URL}
+  celery_worker:
+    image: seppaleinen/movies_backend_importer
+    depends_on:
+      - db
+      - backend
+    entrypoint: celery -A settings.celery worker -l INFO -E
   webapp:
     image: seppaleinen/movies_webapp
     build: frontend/
