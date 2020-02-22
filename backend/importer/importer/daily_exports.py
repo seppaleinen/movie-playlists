@@ -1,5 +1,5 @@
 import datetime, requests, gzip, json, logging
-from importer.models import ProductionCompanyIds, KeywordIds, PersonIds, MovieIds
+from importer.models import ProductionCompanyIds, KeywordIds, PersonIds, Movie
 
 
 logger = logging.getLogger(__name__)
@@ -38,8 +38,8 @@ def fetch_persons():
 def fetch_movies():
     yesterday = __get_date()
     dict_array = __download("http://files.tmdb.org/p/exports/movie_ids_{date}.json.gz".format(date=yesterday), 'movies.json.gz')
-    wrapper = __split_into_create_update_or_delete(MovieIds, dict_array)
-    return persist(MovieIds, wrapper)
+    wrapper = __split_into_create_update_or_delete(Movie, dict_array)
+    return persist(Movie, wrapper)
 
 
 def persist(entity, wrapper):

@@ -1,9 +1,9 @@
 from celery import shared_task
-import logging
+import logging, os, requests, json
 from importer import models
 
 logger = logging.getLogger(__name__)
-
+api_key = os.getenv('TMDB_API', 'test')
 
 @shared_task
 def build_something():
@@ -12,10 +12,29 @@ def build_something():
     return "hej"
 
 
-@shared_task
-def fetch_movie(movie_ids):
-    logger.info("Fetching movie ids: %s" % movie_ids)
-    return movie_ids
+@shared_task(bind=True, max_retries=3)
+def fetch_movie(self, movie_id):
+    logger.info("Fetching movie id: %s" % movie_id)
+    movie = models.Movie.objects.get(pk=movie_id)
+    try:
+        movie = movie.append_info(__fetch_movie_info(movie_id))
+        movie.save()
+        return movie_id
+    except Exception as exc:
+        self.retry(exc=exc, countdown=60)
+
+
+def __fetch_movie_info(id):
+    url = "https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}&language=en-US&append_to_response=alternative_titles,keywords,external_ids,images".format(movie_id=id, api_key=os.getenv('TMDB_API', 'test'))
+    print(url)
+    response = requests.get(url)
+    if response.status_code == 200:
+        return json.loads(response.content)
+    elif response.status_code == 404:
+        logger.info("Movie: %s has been removed." % id)
+    else:
+        logger.error("Could not fetch data for movie_id=%s" % id)
+        raise Exception("%s - %s" % (response.status_code, response.content))
 
 
 @shared_task

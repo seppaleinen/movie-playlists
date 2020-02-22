@@ -33,7 +33,7 @@ services:
     depends_on:
       - db
       - backend
-    entrypoint: celery -A settings.celery worker -l INFO -E --pool=gevent --autoscale=200,10
+    entrypoint: celery -A settings.celery worker -l INFO -E --pool=gevent --autoscale=200,10 -n worker@%n
   webapp:
     image: seppaleinen/movies_webapp
     build: frontend/
