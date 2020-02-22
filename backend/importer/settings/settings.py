@@ -43,7 +43,7 @@ INSTALLED_APPS = [
 ]
 
 CRONJOBS = [
-    ('0 9 * * *', 'importer.daily_exports.fetch_all', '>> /tmp/scheduled_job.log')
+    ('0 9 * * *', 'importer.daily_exports.fetch_all', '>> /tmp/scheduled_job.log 2>&1')
 ]
 
 MIDDLEWARE = [
