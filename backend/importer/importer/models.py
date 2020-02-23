@@ -119,9 +119,7 @@ class Movie(models.Model):
             alt_title = AlternativeTitle(movie_id=self.id,iso_3166_1=fetch_alt_title['iso_3166_1'],title=title,type=fetch_alt_title['type'])
             alt_title.save()
             self.alternative_titles.add(alt_title)
-        print(Language.objects.all())
         for fetch_spoken_lang in fetched_movie['spoken_languages']:
-            print(fetch_spoken_lang)
             self.spoken_languages.add(Language.objects.get(iso_639_1=fetch_spoken_lang['iso_639_1']))
         for fetch_prod_country in fetched_movie['production_countries']:
             self.production_countries.add(Country.objects.get(iso_3166_1=fetch_prod_country['iso_3166_1']))

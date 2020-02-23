@@ -29,5 +29,4 @@ def import_movies(request):
 
 
 def health(request):
-    asd = shared_tasks.build_something.delay()
     return HttpResponse("Status: OK")

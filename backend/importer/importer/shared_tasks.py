@@ -5,12 +5,6 @@ from importer import models
 logger = logging.getLogger(__name__)
 api_key = os.getenv('TMDB_API', 'test')
 
-@shared_task
-def build_something():
-    for i in models.KeywordIds.objects.filter(pk=278).all():
-        logger.info("Hej: %s" % i)
-    return "hej"
-
 
 @shared_task(bind=True, max_retries=3)
 def fetch_movie(self, movie_id):
@@ -26,7 +20,6 @@ def fetch_movie(self, movie_id):
 
 def __fetch_movie_info(id):
     url = "https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}&language=en-US&append_to_response=alternative_titles,keywords,external_ids,images".format(movie_id=id, api_key=os.getenv('TMDB_API', 'test'))
-    print(url)
     response = requests.get(url)
     if response.status_code == 200:
         return json.loads(response.content)
