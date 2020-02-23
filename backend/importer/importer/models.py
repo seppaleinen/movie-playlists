@@ -104,7 +104,7 @@ class Movie(models.Model):
         self.fetched = True
         self.raw_response = fetched_movie
         self.budget = fetched_movie['budget']
-        self.imdb_id = fetched_movie['imdb_id']
+        self.imdb_id = fetched_movie['imdb_id'] if fetched_movie['imdb_id'] is not '' else None
         self.original_language = fetched_movie['original_language']
         self.overview = fetched_movie['overview']
         self.poster_path = fetched_movie['poster_path']

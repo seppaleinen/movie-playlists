@@ -33,7 +33,9 @@ services:
     depends_on:
       - db
       - backend
-    entrypoint: celery -A settings.celery worker -l INFO -E --pool=gevent --autoscale=200,10 -n worker@%n
+    environment:
+      - TMDB_API=${TMDB_API}
+    entrypoint: celery -A settings.celery worker -l INFO -E --pool=gevent --concurrency=100 -n worker@%n
   webapp:
     image: seppaleinen/movies_webapp
     build: frontend/

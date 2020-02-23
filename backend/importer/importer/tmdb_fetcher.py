@@ -10,18 +10,10 @@ def fetch_keywords():
 
 
 def fetch_movies():
-    movies = ((id,) for id in models.Movie.objects.filter(fetched=False, deleted=False).values_list('id', flat=True))
-    shared_tasks.fetch_movie.chunks(movies, 100).group().apply_async()
-    #for chunk in __chunks(models.Movie.objects.filter(fetched=False, deleted=False).values_list('id', flat=True), 20):
-    #    shared_tasks.fetch_movie.delay(chunk)
+    movies = ((id,) for id in models.Movie.objects.filter(fetched=False, deleted=False).group().values_list('id', flat=True))
+    shared_tasks.fetch_movie.chunks(movies, 100).delay()
     return "All is in queue"
         
-
-def __chunks(__list, n):
-    """Yield successive n-sized chunks from list."""
-    for i in range(0, len(__list), n):
-        yield __list[i:i + n]
-
 
 def __fetch_keyword_details(keyword_id, page=1):
     url = "https://api.themoviedb.org/3/discover/movie"\
