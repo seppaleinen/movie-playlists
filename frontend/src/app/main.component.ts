@@ -17,7 +17,7 @@ export class HttpService {
 @Component({
   selector: 'main-selector',
   templateUrl: './main.component.html',
-  styles: []
+  styleUrls: ['./main.component.css']
 })
 export class MainComponent {
   title = 'frontend';

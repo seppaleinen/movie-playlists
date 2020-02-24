@@ -1,0 +1,40 @@
+nav {
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0px;
+    background-color: #081c24;
+    width: 100%;
+    z-index: 999;
+    height: 120px;
+    overflow: hidden;
+}
+
+nav a {
+    float: left;
+    display: block;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 600;
+    border: 1px solid white;
+    padding: 20px;
+    font-size: 2em;
+    padding: 14px 16px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+    vertical-align: center;
+}
+
+.nav-link a:hover:not(.active) {
+    background-color: #4CAF50;
+}
+
+.active {
+    background-color: green;
+}
+
+.search-bar {
+    display: block;
+    width: 100%;
+}
