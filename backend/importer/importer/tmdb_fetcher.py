@@ -10,8 +10,8 @@ def fetch_keywords():
 
 
 def fetch_movies():
-    movies = ((id,) for id in models.Movie.objects.filter(fetched=False, deleted=False).group().values_list('id', flat=True))
-    shared_tasks.fetch_movie.chunks(movies, 100).delay()
+    movies = ((id,) for id in models.Movie.objects.filter(fetched=False, deleted=False).values_list('id', flat=True))
+    shared_tasks.fetch_movie.chunks(movies, 99).group().delay()
     return "All is in queue"
         
 
