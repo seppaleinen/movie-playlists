@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from importer import daily_exports 
+from django.http import HttpResponse, StreamingHttpResponse
+from importer import daily_exports, tmdb_fetcher
+from importer import shared_tasks
 
 
 def fetch_daily_production_companies(request):
@@ -17,6 +18,14 @@ def fetch_daily_persons(request):
 
 def fetch_daily_movies(request):
 	return HttpResponse(daily_exports.fetch_movies())
+
+
+def import_keywords(request):
+    return StreamingHttpResponse(tmdb_fetcher.fetch_keywords())
+
+
+def import_movies(request):
+    return HttpResponse(tmdb_fetcher.fetch_movies())
 
 
 def health(request):

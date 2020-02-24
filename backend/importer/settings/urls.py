@@ -24,5 +24,9 @@ urlpatterns = [
     path('import/daily/tmdb/keywords',              			views.fetch_daily_keywords),
     path('import/daily/tmdb/persons',                           views.fetch_daily_persons),
     path('import/daily/tmdb/movies',                            views.fetch_daily_movies),
+
+    path('import/tmdb/keywords',                                views.import_keywords),
+    path('import/tmdb/movies',                                  views.import_movies),
+
     path('health',                                              views.health),
 ]

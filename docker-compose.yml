@@ -7,7 +7,16 @@ services:
       - pgdata:/var/lib/postgresql
       - ./postgres-data:/tmp/
     ports:
-      - "5432:5432"
+      - "5433:5432"
+  redis:
+    image: redis:5-alpine
+    ports:
+      - "6379:6379"
+  flower: # Celery Monitor
+    image: mher/flower
+    command: ["flower", "--broker=redis://redis:6379/0", "--port=8888"]  
+    ports:  
+      - 8888:8888  
   backend:
     image: seppaleinen/movies_backend_importer
     build: backend/importer/
@@ -19,6 +28,14 @@ services:
     environment:
       - TMDB_API=${TMDB_API}
       - SENTRY_URL=${SENTRY_URL}
+  celery_worker:
+    image: seppaleinen/movies_backend_importer
+    depends_on:
+      - db
+      - backend
+    environment:
+      - TMDB_API=${TMDB_API}
+    entrypoint: celery -A settings.celery worker -l INFO -E --pool=gevent --concurrency=99 -n worker@%n
   webapp:
     image: seppaleinen/movies_webapp
     build: frontend/

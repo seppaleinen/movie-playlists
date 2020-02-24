@@ -1,7 +1,6 @@
 # Backend
 
 
-
 ### Notes
 * To fetch images, prefix with: https://image.tmdb.org/t/p/w500/
 
@@ -32,6 +31,8 @@ gunicorn --config=gunicorn.config.py settings.wsgi
 ./manage.py runserver
 
 # Lint project
-pylint --load-plugins pylint_django app/ settings/
+pylint --load-plugins pylint_django importer/ settings/
 
+# Run mutation tests
+mutmut --paths-to-mutate=importer/ --runner="./manage.py behave" --tests-dir=features/ run
 ```

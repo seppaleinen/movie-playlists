@@ -43,7 +43,7 @@ INSTALLED_APPS = [
 ]
 
 CRONJOBS = [
-    ('0 9 * * *', 'importer.daily_exports.fetch_all', '>> /tmp/scheduled_job.log')
+    ('0 9 * * *', 'importer.daily_exports.fetch_all', '>> /tmp/scheduled_job.log 2>&1')
 ]
 
 MIDDLEWARE = [
@@ -76,6 +76,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'settings.wsgi.application'
 
+#CELERY_ACCEPT_CONTENT = ['application/json']
+#CELERY_RESULT_SERIALIZER = 'json'
+#CELERY_TASK_SERIALIZER = 'json'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -83,6 +86,8 @@ WSGI_APPLICATION = 'settings.wsgi.application'
 
 environment = os.getenv('ENVIRONMENT', 'localhost')
 if environment == 'DOCKER':
+    CELERY_BROKER_URL = 'redis://redis:6379'
+    CELERY_RESULT_BACKEND = 'redis://redis:6379'
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -93,12 +98,24 @@ if environment == 'DOCKER':
             'CONN_MAX_AGE': 500,
         }
     }
-else:
-    db_name = 'test.db' if 'test' in sys.argv else 'data.db'
+elif 'behave' in sys.argv:
+    BROKER_BACKEND = 'memory'
+    CELERY_TASK_ALWAYS_EAGER = True
+    CELERY_TASK_EAGER_PROPAGATES = True
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, db_name),
+            'NAME': os.path.join(BASE_DIR, 'test.db'),
+            'CONN_MAX_AGE': 500,
+        }
+    }    
+else:
+    CELERY_BROKER_URL = 'redis://localhost:6379'
+    CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'data.db'),
             'CONN_MAX_AGE': 500,
         }
     }
