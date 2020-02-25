@@ -2,12 +2,14 @@ version: '3'
 
 services:
   db:
-    image: postgres:10.5-alpine
+    image: postgres:12-alpine
     volumes:
       - pgdata:/var/lib/postgresql
       - ./postgres-data:/tmp/
     ports:
       - "5433:5432"
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
   redis:
     image: redis:5-alpine
     ports:
@@ -28,6 +30,7 @@ services:
     environment:
       - TMDB_API=${TMDB_API}
       - SENTRY_URL=${SENTRY_URL}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
   celery_worker:
     image: seppaleinen/movies_backend_importer
     depends_on:
