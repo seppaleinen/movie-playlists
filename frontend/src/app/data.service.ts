@@ -17,7 +17,6 @@ export class DataService {
         return this.http.get<Post[]>(this.postUrl);
     }
 
-
     filteredListOptions() {
         let posts = this.postsData;
         let filteredPostsList = [];

@@ -64,7 +64,6 @@ export class SearchBarComponent implements OnInit {
             this.dataService.searchOption = []
         }
         else {
-
             this.dataService.searchOption.push(posts);
             this.onSelectedOption.emit(this.dataService.searchOption)
         }
@@ -72,7 +71,6 @@ export class SearchBarComponent implements OnInit {
     }
 
     removeOption(option) {
-
         let index = this.dataService.searchOption.indexOf(option);
         if (index >= 0)
             this.dataService.searchOption.splice(index, 1);
