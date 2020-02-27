@@ -1,5 +1,7 @@
-import { AfterViewInit, Component, Injectable } from '@angular/core';
+import { AfterViewInit, Component, Injectable, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { DataService } from './data.service';
+import { Post } from './post';
 
 
 @Injectable({
@@ -19,11 +21,13 @@ export class HttpService {
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
-export class MainComponent {
+export class MainComponent implements OnInit {
   title = 'frontend';
+  post: Post[]
 
-  constructor(private service: HttpService) {
+  constructor(private service: HttpService, public dataService: DataService) {
     this.service = service;
+    this.dataService = dataService;
   }
   
   getHealth() {
@@ -32,5 +36,25 @@ export class MainComponent {
         console.log("Response: " + resp);
       });
   }
+
+  ngOnInit() {
+    this.dataService.getPosts().subscribe(posts => {
+      this.post = posts
+      this.dataService.postsData = posts
+    });
+  }
+
+  onSelectedOption(e) {
+    this.getFilteredExpenseList();
+  }
+
+  getFilteredExpenseList() {
+    if (this.dataService.searchOption.length > 0)
+      this.post = this.dataService.filteredListOptions();
+    else {
+      this.post = this.dataService.postsData;
+    }
+  }
+
 
 }
