@@ -1,8 +1,12 @@
-import os, requests, json, logging
+import os
+import requests
+import json
+import logging
 from importer import models, shared_tasks
 
 api_key = os.getenv('TMDB_API', 'test')
 logger = logging.getLogger(__name__)
+
 
 def fetch_keywords():
     for id in models.KeywordIds.objects.filter(fetched=False, deleted=False).values_list('id', flat=True):

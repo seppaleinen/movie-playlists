@@ -1,16 +1,19 @@
 from celery import shared_task
-import logging, os, requests, json
+import logging
+import os
+import requests
+import json
 from importer import models
 
 logger = logging.getLogger(__name__)
-    
+
 
 @shared_task(bind=True, max_retries=3)
 def fetch_movie(self, movie_id):
     logger.info("Fetching movie id: %s" % movie_id)
     movie = models.Movie.objects.get(pk=movie_id)
     try:
-        url = "https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}&language=en-US&append_to_response=alternative_titles,keywords,external_ids,images".format(movie_id=id, api_key=os.getenv('TMDB_API', 'test'))
+        url = "https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}&language=en-US&append_to_response=alternative_titles,keywords,external_ids,images".format(movie_id=movie_id, api_key=os.getenv('TMDB_API', 'test'))
         response = requests.get(url)
         if response.status_code == 200:
             movie = movie.append_info(json.loads(response.content))
@@ -32,6 +35,19 @@ def fetch_movie(self, movie_id):
 def fetch_person(self, person_id):
     logger.info("Fetching person id: %s" % person_id)
     try:
+        api_key = os.getenv('TMDB_API', 'test')
+        url = "https://api.themoviedb.org/3/person/{person_id}?api_key={api_key}&language=en-USappend_to_response=images,movie_credits,external_ids".format(person_id=person_id, api_key=api_key)
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = json.loads(response.content)
+            person = models.PersonIds.objects.get(pk=person_id)
+            for cast in data['movie_credits']['cast']:
+                person.job = cast['job']
+
+            # movie_id = data['id']
+            # imdb_id = data['imdb_id']
+            # images = data['images']['profiles']['file_path']
+            # raw = data
         person = models.PersonId.objects.get(pk=person_id)
     except requests.exceptions.RequestException as exc:
         logger.error("Error. Retrying later. %s" % exc)
@@ -59,13 +75,15 @@ def fetch_keyword(self, keyword_id, page=1):
         ids = [result['id'] for result in data['results']]
         logger.info("Keyword: {keyword}: Page: {page} - {total}. Ids: {ids}".format(keyword=keyword_id, page=data['page'], total=total_pages, ids=ids))
         keyword = models.KeywordIds.objects.get(pk=keyword_id)
-        for movie in models.Movie.objects.filter(pk__in=ids, fetched=True):
+        for movie in models.Movie.objects.filter(pk__in=ids):
             movie.keywords.add(keyword)
             movie.save()
 
         if int(page) < int(total_pages):
             fetch_keyword(keyword_id=keyword_id, page=int(page) + 1)
+        else:
+            keyword.fetched = True
+            keyword.save()
     else:
-        logger.error("Could not get response calling %s" % url)
+        logger.error("Could not get response calling %s" % unformatted_url.format(keyword_id=keyword_id, api_key=api_key, page=page))
         raise Exception("%s - %s" % (response.status_code, response.content))
-

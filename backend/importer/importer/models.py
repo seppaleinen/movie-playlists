@@ -38,7 +38,7 @@ class Movie(models.Model):
         self.fetched = True
         self.raw_response = fetched_movie
         self.budget = fetched_movie['budget']
-        self.imdb_id = fetched_movie['imdb_id'] if fetched_movie['imdb_id'] is not '' else None
+        self.imdb_id = fetched_movie['imdb_id'] if fetched_movie['imdb_id'] != '' else None
         self.original_language = Language.objects.get(pk=fetched_movie['original_language'])
         self.overview = fetched_movie['overview']
         self.poster_path = fetched_movie['poster_path']
@@ -50,7 +50,7 @@ class Movie(models.Model):
 
         for fetch_alt_title in fetched_movie['alternative_titles']['titles']:
             title = fetch_alt_title['title'] if len(fetch_alt_title['title']) < 500 else (fetch_alt_title['title'][:498] + '..')
-            alt_title = AlternativeTitle(movie_id=self.id,iso_3166_1=fetch_alt_title['iso_3166_1'],title=title,type=fetch_alt_title['type'])
+            alt_title = AlternativeTitle(movie_id=self.id, iso_3166_1=fetch_alt_title['iso_3166_1'], title=title, type=fetch_alt_title['type'])
             alt_title.save()
             self.alternative_titles.add(alt_title)
         for fetch_spoken_lang in fetched_movie['spoken_languages']:
@@ -125,12 +125,11 @@ class PersonIds(models.Model):
 
     def __str__(self):
         return "id:{id}, name:{name}, popularity={popularity}, fetched={fetched}, deleted={deleted}".format(
-        	id=self.id, 
-        	name=self.name, 
-        	popularity=self.popularity, 
-        	fetched=self.fetched, 
-        	deleted=self.deleted)
-
+            id=self.id,
+            name=self.name,
+            popularity=self.popularity,
+            fetched=self.fetched,
+            deleted=self.deleted)
 
 
 class Genre(models.Model):
@@ -144,7 +143,6 @@ class Genre(models.Model):
     class Meta:
         indexes = [models.Index(fields=['id'], name='genre_pk_index')]
         db_table = "genre"
-
 
 
 class AlternativeTitle(models.Model):
@@ -184,4 +182,3 @@ class Language(models.Model):
     class Meta:
         indexes = [models.Index(fields=['iso_639_1'], name='iso_639_1_pk_index')]
         db_table = "language"
-

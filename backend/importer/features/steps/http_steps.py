@@ -1,5 +1,8 @@
 from behave import given, when, then
-import responses, gzip, io, os
+import responses
+import gzip
+import io
+import os
 from freezegun import freeze_time
 from importer import models
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -17,7 +20,7 @@ def given_keyword(context, keyword_id):
 
 
 @given(u'{number_of_movies} fetched movies')
-def given_unfetched_movies(context, number_of_movies):
+def given_fetched_movies(context, number_of_movies):
     for i in range(1, int(number_of_movies) + 1):
         models.Movie.objects.create(id=i, popularity=1.2, fetched=True)
 
@@ -40,19 +43,19 @@ def given_mock(context, method, url, body, status, content_type):
 
 
 @given(u'mocked {url} with testdata {body}')
-def given_mock(context, url, body):
+def given_mock2(context, url, body):
     mock = dict()
     mock['method'] = 'GET'
     mock['url'] = url
     with open("%s/%s" % (BASE_DIR, body), 'rb') as file:
-    	mock['body'] = __gzip_string(file.read())
+        mock['body'] = __gzip_string(file.read())
     mock['status'] = int(200)
     mock['content_type'] = 'application/octet-stream'
     context.mocks.append(mock)
 
 
 @given(u'mocked {url} with json {body}')
-def given_mock(context, url, body):
+def given_mock3(context, url, body):
     mock = dict()
     mock['method'] = 'GET'
     mock['url'] = url
@@ -90,7 +93,7 @@ def movies_should_be_imported(context, expected_number_movies):
 @then(u'movie_id={movie_id} should have a keyword={expected_keyword} associated to it')
 def then_keyword_should_be_connected_to_movie(context, movie_id, expected_keyword):
     all_keywords_in_movie = models.Movie.objects.get(pk=movie_id).keywords.all()
-    context.test.assertTrue(expected_keyword in keyword_name for keyword in all_keywords_in_movie)
+    context.test.assertTrue(expected_keyword in keyword.name for keyword in all_keywords_in_movie)
 
 
 def __gzip_string(string):
@@ -98,4 +101,3 @@ def __gzip_string(string):
     with gzip.GzipFile(fileobj=out, mode="w") as f:
         f.write(string)
     return out.getvalue()
-

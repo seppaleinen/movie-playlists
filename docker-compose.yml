@@ -38,7 +38,7 @@ services:
       - backend
     environment:
       - TMDB_API=${TMDB_API}
-    entrypoint: celery -A settings.celery worker -l INFO -E --pool=gevent --concurrency=99 -n worker@%n
+    entrypoint: celery -A settings.celery worker -l INFO -E -n worker@%n
   webapp:
     image: seppaleinen/movies_webapp
     build: frontend/

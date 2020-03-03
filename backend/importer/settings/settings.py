@@ -10,7 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
-import os, sys
+import os
+import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -76,9 +77,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'settings.wsgi.application'
 
-#CELERY_ACCEPT_CONTENT = ['application/json']
-#CELERY_RESULT_SERIALIZER = 'json'
-#CELERY_TASK_SERIALIZER = 'json'
+# CELERY_ACCEPT_CONTENT = ['application/json']
+# CELERY_RESULT_SERIALIZER = 'json'
+# CELERY_TASK_SERIALIZER = 'json'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -109,7 +110,7 @@ elif 'behave' in sys.argv:
             'NAME': os.path.join(BASE_DIR, 'test.db'),
             'CONN_MAX_AGE': 500,
         }
-    }    
+    }
 else:
     CELERY_BROKER_URL = 'redis://localhost:6379'
     CELERY_RESULT_BACKEND = 'redis://localhost:6379'
@@ -127,7 +128,6 @@ LOGGING = {
     'formatters': {
         'simple': {
             'format': '%(asctime)-20s %(levelname)-5s %(module)-15s %(message)s',
-            
         },
     },
     'handlers': {

@@ -1,5 +1,10 @@
-import datetime, requests, gzip, json, logging
-from importer.models import ProductionCompanyIds, KeywordIds, PersonIds, Movie
+import datetime
+import requests
+import gzip
+import json
+import logging
+import os
+from importer import models
 
 
 logger = logging.getLogger(__name__)
@@ -17,29 +22,41 @@ def fetch_all():
 def fetch_production_companies():
     yesterday = __get_date()
     dict_array = __download("http://files.tmdb.org/p/exports/production_company_ids_{date}.json.gz".format(date=yesterday), 'production_companies.json.gz')
-    wrapper = __split_into_create_update_or_delete(ProductionCompanyIds, dict_array)
-    return persist(ProductionCompanyIds, wrapper)
+    wrapper = __split_into_create_update_or_delete(models.ProductionCompanyIds, dict_array)
+    return persist(models.ProductionCompanyIds, wrapper)
 
 
 def fetch_keywords():
     yesterday = __get_date()
     dict_array = __download("http://files.tmdb.org/p/exports/keyword_ids_{date}.json.gz".format(date=yesterday), 'keywords.json.gz')
-    wrapper = __split_into_create_update_or_delete(KeywordIds, dict_array)
-    return persist(KeywordIds, wrapper)
+    wrapper = __split_into_create_update_or_delete(models.KeywordIds, dict_array)
+    return persist(models.KeywordIds, wrapper)
 
 
 def fetch_persons():
     yesterday = __get_date()
     dict_array = __download("http://files.tmdb.org/p/exports/person_ids_{date}.json.gz".format(date=yesterday), 'persons.json.gz')
-    wrapper = __split_into_create_update_or_delete(PersonIds, dict_array)
-    return persist(PersonIds, wrapper)
+    wrapper = __split_into_create_update_or_delete(models.PersonIds, dict_array)
+    return persist(models.PersonIds, wrapper)
 
 
 def fetch_movies():
     yesterday = __get_date()
     dict_array = __download("http://files.tmdb.org/p/exports/movie_ids_{date}.json.gz".format(date=yesterday), 'movies.json.gz')
-    wrapper = __split_into_create_update_or_delete(Movie, dict_array)
-    return persist(Movie, wrapper)
+    wrapper = __split_into_create_update_or_delete(models.Movie, dict_array)
+    return persist(models.Movie, wrapper)
+
+
+def fetch_genres():
+    url = "https://api.themoviedb.org/3/genre/movie/list?api_key={api_key}&language=en-US".format(api_key=os.getenv('TMDB_API', 'test'))
+    response = requests.get(url)
+    if response.status_code == 200:
+        json_genres = json.loads(response.content)['genres']
+        genres = []
+        for genre in json_genres:
+            genres.append(models.Genre(id=genre['id'], name=genre['name']))
+        models.Genre.objects.bulk_create(genres)
+        return "Imported: %s genres" % len(genres)
 
 
 def persist(entity, wrapper):
@@ -58,7 +75,6 @@ def persist(entity, wrapper):
         return "Exception: %s" % e
 
 
-
 def __download(url, tmp_file):
     response = requests.get(url)
     if response.status_code == 200:
@@ -69,7 +85,7 @@ def __download(url, tmp_file):
         logger.info("Downloading {url}".format(url=url))
         for i in contents:
             try:
-                if not i: # New str.split('\n') passes through empty lines which str.splitlines took care of.
+                if not i:  # New str.split('\n') passes through empty lines which str.splitlines took care of.
                     pass
                 else:
                     loaded = json.loads(i, strict=False)
@@ -77,7 +93,7 @@ def __download(url, tmp_file):
                         dict_array.append(loaded)
                     elif 'video' not in loaded:
                         dict_array.append(loaded)
-            except Exception as e:
+            except Exception:
                 logger.error("Could not parse json string: %s" % i)
 
         return dict_array
@@ -106,7 +122,7 @@ def __unzip_file(file_name):
     file_content = f.read()
     f.close()
     # there are names with line separators (<U+2028>) and line paragraphs (<U+2029>) which doesn't work so well with splitlines.
-    return file_content.split('\n') 
+    return file_content.split('\n')
 
 
 def __get_date():
@@ -131,7 +147,7 @@ def __log_progress(iterable, message, length=None):
             percentage = temp_perc
             logger.info("{time} - {message} data handling in progress - {percentage}%".format(
                 time=datetime.datetime.now().strftime(datetime_format),
-                message=message, 
+                message=message,
                 percentage=percentage))
         count += 1
         yield i

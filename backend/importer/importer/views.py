@@ -1,24 +1,35 @@
-from django.shortcuts import render
-from django.http import HttpResponse, StreamingHttpResponse
+from django.http import HttpResponse
 from importer import daily_exports, tmdb_fetcher, api
-from importer import shared_tasks
 import json
 
 
+def fetch_dailies(request):
+    fetch_daily_movies(request)
+    fetch_daily_keywords(request)
+    fetch_daily_production_companies(request)
+    fetch_daily_persons(request)
+    fetch_genres(request)
+    return HttpResponse("Imported all dailies")
+
+
 def fetch_daily_production_companies(request):
-	return HttpResponse(daily_exports.fetch_production_companies())
+    return HttpResponse(daily_exports.fetch_production_companies())
 
 
 def fetch_daily_keywords(request):
-	return HttpResponse(daily_exports.fetch_keywords())
+    return HttpResponse(daily_exports.fetch_keywords())
 
 
 def fetch_daily_persons(request):
-	return HttpResponse(daily_exports.fetch_persons())
+    return HttpResponse(daily_exports.fetch_persons())
 
 
 def fetch_daily_movies(request):
-	return HttpResponse(daily_exports.fetch_movies())
+    return HttpResponse(daily_exports.fetch_movies())
+
+
+def fetch_genres(request):
+    return HttpResponse(daily_exports.fetch_genres())
 
 
 def import_persons(request):
@@ -42,4 +53,4 @@ def search(request, query):
 
 
 def health(request):
-	return HttpResponse('{"Status": "OK"}')
+    return HttpResponse('{"Status": "OK"}')

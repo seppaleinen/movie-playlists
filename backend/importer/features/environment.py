@@ -17,8 +17,10 @@ def after_all(context):
     os.environ.update(context._environ)
 
 
-# To force django-behave to rollback the db to initial state, instead of truncating (thus losing the data inserted by migrations)
+# To force django-behave to rollback the db to initial state,
+# instead of truncating (thus losing the data inserted by migrations)
 old_test_case_init = BehaviorDrivenTestCase.__init__
+
 
 def new_test_case_init(self, *k, **kw):
     old_test_case_init(self, *k, **kw)

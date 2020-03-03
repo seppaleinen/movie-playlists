@@ -9,5 +9,5 @@ def search(query):
 def autocomplete(query):
     data = []
     for movie in models.Movie.objects.filter(name__icontains=query).only('id', 'name')[:5]:
-        data.append({'id':movie.id, 'name':movie.name})
+        data.append({'id': movie.id, 'name': movie.name})
     return json.dumps(data)
