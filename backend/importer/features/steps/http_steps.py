@@ -8,10 +8,23 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 @given(u'{number_of_movies} unfetched movies')
 def given_unfetched_movies(context, number_of_movies):
     for i in range(1, int(number_of_movies) + 1):
-        movie = models.Movie()
-        movie.id = i
-        movie.popularity = 1.2
-        movie.save()
+        models.Movie.objects.create(id=i, popularity=1.2)
+
+
+@given(u'keyword with id {keyword_id}')
+def given_keyword(context, keyword_id):
+    models.KeywordIds.objects.create(id=keyword_id)
+
+
+@given(u'{number_of_movies} fetched movies')
+def given_unfetched_movies(context, number_of_movies):
+    for i in range(1, int(number_of_movies) + 1):
+        models.Movie.objects.create(id=i, popularity=1.2, fetched=True)
+
+
+@given(u'movie exists with name "{movie_name}"')
+def given_movie_with_name(context, movie_name):
+    models.Movie.objects.create(name=movie_name, popularity=0.0, original_language=models.Language.objects.get(pk='en'))
 
 
 @given(u'mocked {method} with {url}, and {body} and {status}, with {content_type}')
@@ -72,6 +85,12 @@ def response_be_like(context, expected_message):
 @then(u'{expected_number_movies} movies should have been imported')
 def movies_should_be_imported(context, expected_number_movies):
     context.test.assertEquals(models.Movie.objects.filter(fetched=True).count(), int(expected_number_movies))
+
+
+@then(u'movie_id={movie_id} should have a keyword={expected_keyword} associated to it')
+def then_keyword_should_be_connected_to_movie(context, movie_id, expected_keyword):
+    all_keywords_in_movie = models.Movie.objects.get(pk=movie_id).keywords.all()
+    context.test.assertTrue(expected_keyword in keyword_name for keyword in all_keywords_in_movie)
 
 
 def __gzip_string(string):

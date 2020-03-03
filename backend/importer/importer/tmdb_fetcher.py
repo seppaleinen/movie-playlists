@@ -5,15 +5,22 @@ api_key = os.getenv('TMDB_API', 'test')
 logger = logging.getLogger(__name__)
 
 def fetch_keywords():
-    for keyword_id in models.KeywordIds.objects.filter(fetched=False, deleted=False).values_list('id', flat=True):
-        yield from  __fetch_keyword_details(keyword_id)
+    for id in models.KeywordIds.objects.filter(fetched=False, deleted=False).values_list('id', flat=True):
+        shared_tasks.fetch_keyword.delay(keyword_id=id)
+    return "All keywords in queue"
 
 
 def fetch_movies():
     movies = ((id,) for id in models.Movie.objects.filter(fetched=False, deleted=False).values_list('id', flat=True))
     shared_tasks.fetch_movie.chunks(movies, 99).group().delay()
     return "All is in queue"
-        
+
+
+def fetch_persons():
+    persons = ((id,) for id in models.PersonIds.objects.filter(fetched=False, deleted=False).values_list('id', flat=True))
+    shared_tasks.fetch_person.chunks(persons, 99).group().delay()
+    return "All persons in queue"
+
 
 def __fetch_keyword_details(keyword_id, page=1):
     url = "https://api.themoviedb.org/3/discover/movie"\

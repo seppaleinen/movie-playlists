@@ -25,8 +25,12 @@ urlpatterns = [
     path('import/daily/tmdb/persons',                           views.fetch_daily_persons),
     path('import/daily/tmdb/movies',                            views.fetch_daily_movies),
 
+    path('import/tmdb/persons',                                 views.import_persons),
     path('import/tmdb/keywords',                                views.import_keywords),
     path('import/tmdb/movies',                                  views.import_movies),
+
+    path('api/autocomplete/<str:query>',                        views.autocomplete),
+    path('api/search/<str:query>/',                             views.search),
 
     path('health',                                              views.health),
 ]
