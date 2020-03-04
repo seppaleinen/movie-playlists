@@ -7,3 +7,5 @@ services:
     image: seppaleinen/movies_backend_importer:dev
   webapp:
     image: seppaleinen/movies_webapp:dev
+  celery_worker:
+    image: seppaleinen/movies_backend_importer:dev
