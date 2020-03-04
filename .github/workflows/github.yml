@@ -41,8 +41,6 @@ jobs:
     - uses: actions/checkout@v2
     - name: Install dependencies
       run: npm install --prefix frontend/
-    - name: Run tests
-      run: npm run ci-test --prefix frontend/
     - name: Build docker dev image
       run: docker build -f frontend/Dockerfile -t seppaleinen/movies_webapp:dev frontend/
     - name: Push docker image
