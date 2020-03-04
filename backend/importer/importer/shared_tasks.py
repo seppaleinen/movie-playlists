@@ -24,6 +24,7 @@ def fetch_movie(self, movie_id):
             movie.save()
         else:
             logger.error("Unknown error fetching movie_id=%s, %s" % (id, response.content))
+        return movie_id
     except requests.exceptions.RequestException as exc:
         logger.error("Error. Retrying later. %s" % exc)
         self.retry(exc=exc, countdown=60)

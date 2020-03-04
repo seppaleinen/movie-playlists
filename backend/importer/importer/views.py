@@ -1,6 +1,5 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from importer import daily_exports, tmdb_fetcher, api
-import json
 
 
 def fetch_dailies(request):
@@ -45,11 +44,11 @@ def import_movies(request):
 
 
 def autocomplete(request, query):
-    return HttpResponse(json.dumps(api.autocomplete(query)))
+    return JsonResponse(api.autocomplete(query), safe=False)
 
 
 def search(request, query):
-    return HttpResponse(api.search(query))
+    return JsonResponse(api.search(query), safe=False)
 
 
 def health(request):

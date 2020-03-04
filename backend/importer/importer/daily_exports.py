@@ -52,9 +52,7 @@ def fetch_genres():
     response = requests.get(url)
     if response.status_code == 200:
         json_genres = json.loads(response.content)['genres']
-        genres = []
-        for genre in json_genres:
-            genres.append(models.Genre(id=genre['id'], name=genre['name']))
+        genres = [models.Genre(id=genre['id'], name=genre['name']) for genre in json_genres]
         models.Genre.objects.bulk_create(genres)
         return "Imported: %s genres" % len(genres)
 

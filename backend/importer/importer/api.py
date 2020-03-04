@@ -1,13 +1,9 @@
 from importer import models
-import json
 
 
 def search(query):
-    return models.Movie.objects.filter(name=query)
+    return list(models.Movie.objects.filter(name=query)[:10].values())
 
 
 def autocomplete(query):
-    data = []
-    for movie in models.Movie.objects.filter(name__icontains=query).only('id', 'name')[:5]:
-        data.append({'id': movie.id, 'name': movie.name})
-    return json.dumps(data)
+    return list(models.Movie.objects.filter(name__icontains=query).values('id', 'name')[:5])

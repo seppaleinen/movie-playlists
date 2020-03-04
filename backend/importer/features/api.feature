@@ -7,9 +7,9 @@ Feature: API
         And a response like "<expected_result>"
 
         Examples: Simple cases
-            | search_query  | expected_result                                   |
-            | Fight Club    | "[{\"id\": 1, \"name\": \"Fight Club\"}]"     |
-            | Fight         | "[{\"id\": 1, \"name\": \"Fight Club\"}]"     |
+            | search_query  | expected_result                       |
+            | Fight Club    | [{"id": 1, "name": "Fight Club"}]     |
+            | Fight         | [{"id": 1, "name": "Fight Club"}]     |
 
 
     Scenario Outline: Testing out the search
@@ -19,7 +19,7 @@ Feature: API
         And a response like "<expected_result>"
 
         Examples: Simple cases
-            | search_query  | expected_result                                   |
-#            | Fight Club    | "[{\"id\": 1, \"name\": \"Fight Club\"}]"     |
+            | search_query  | expected_result                       |
+            | Fight Club    | [{"id": 1, "name": "Fight Club", "popularity": "0.000", "fetched": false, "deleted": false, "budget": null, "original_language_id": "en", "imdb_id": null, "overview": null, "poster_path": null, "release_date": null, "revenue": null, "runtime": null, "vote_average": null, "vote_count": null, "imdb_vote_average": null, "imdb_vote_count": null, "raw_response": null}]     |
 
 
