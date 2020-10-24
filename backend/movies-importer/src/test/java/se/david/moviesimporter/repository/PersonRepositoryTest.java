@@ -22,10 +22,28 @@ public class PersonRepositoryTest {
 	@Test
 	public void asd() {
 		Person person = new Person(1, false, "name", 0.0);
-		personRepository.save(person);
+		personRepository.saveAndFlush(person);
 
 		List<Person> result = personRepository.saveAll(Arrays.asList(person));
 
 		assertEquals(1, result.size());
+	}
+
+	@Test
+	public void asd2() {
+		Person person = new Person(1, false, "name", 0.0);
+
+		List<Person> result = personRepository.saveAll(Arrays.asList(person, person));
+
+		assertEquals(1, personRepository.findAll().size(), personRepository.findAll().toString());
+	}
+	@Test
+	public void asd3() {
+		Person person = new Person(1, false, "name", 0.0);
+		personRepository.saveAndFlush(person);
+		personRepository.saveAndFlush(person);
+		List<Person> result = personRepository.findAllById(Arrays.asList(person.getId()));
+
+		assertEquals(1, result.size(), result.toString());
 	}
 }

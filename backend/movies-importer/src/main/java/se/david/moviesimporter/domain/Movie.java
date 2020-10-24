@@ -2,8 +2,11 @@ package se.david.moviesimporter.domain;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Transient;
+import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -14,8 +17,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Movie {
 	@Id
 	private long id;
+	@Transient
 	private boolean adult;
 	@JsonProperty("original_title")
+	@Column(length = 512)
 	private String originalTitle;
 	private double popularity;
 	private boolean video;
@@ -69,16 +74,12 @@ public class Movie {
 			return false;
 		}
 		Movie movie = (Movie) o;
-		return id == movie.id &&
-				adult == movie.adult &&
-				Double.compare(movie.popularity, popularity) == 0 &&
-				video == movie.video &&
-				Objects.equals(originalTitle, movie.originalTitle);
+		return id == movie.id;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, adult, originalTitle, popularity, video);
+		return Objects.hash(id);
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 /*
 {"adult":false,"id":1293830,"name":"Santiago  Bertolino","popularity":0.6}
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 public class Person {
 	@Id
 	private long id;
+	@Transient
 	private boolean adult;
 	private String name;
 	private double popularity;
@@ -67,15 +69,12 @@ public class Person {
 			return false;
 		}
 		Person person = (Person) o;
-		return id == person.id &&
-				adult == person.adult &&
-				Double.compare(person.popularity, popularity) == 0 &&
-				Objects.equals(name, person.name);
+		return id == person.id;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, adult, name, popularity);
+		return Objects.hash(id);
 	}
 
 	@Override

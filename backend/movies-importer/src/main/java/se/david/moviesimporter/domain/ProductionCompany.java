@@ -8,14 +8,14 @@ import javax.persistence.Id;
 @Entity
 public class ProductionCompany {
 	@Id
-	private Long id;
+	private long id;
 	private String name;
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -36,13 +36,12 @@ public class ProductionCompany {
 			return false;
 		}
 		ProductionCompany that = (ProductionCompany) o;
-		return id == that.id &&
-				Objects.equals(name, that.name);
+		return id == that.id;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name);
+		return Objects.hash(id);
 	}
 
 	@Override

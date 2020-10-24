@@ -8,7 +8,6 @@ import javax.persistence.Id;
 /**
  * {"id":378,"name":"prison"}
  */
-
 @Entity
 public class Keyword {
 	@Id
@@ -40,13 +39,12 @@ public class Keyword {
 			return false;
 		}
 		Keyword keyword = (Keyword) o;
-		return id == keyword.id &&
-				Objects.equals(name, keyword.name);
+		return id == keyword.id;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name);
+		return Objects.hash(id);
 	}
 
 	@Override

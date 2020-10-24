@@ -1,0 +1,400 @@
+{
+  "adult": false,
+  "backdrop_path": "/4iJfYYoQzZcONB9hNzg0J0wWyPH.jpg",
+  "belongs_to_collection": {
+    "id": 10,
+    "name": "Star Wars Collection",
+    "poster_path": "/iTQHKziZy9pAAY4hHEDCGPaOvFC.jpg",
+    "backdrop_path": "/d8duYyyC9J5T825Hg7grmaabfxQ.jpg"
+  },
+  "budget": 11000000,
+  "genres": [
+    {
+      "id": 12,
+      "name": "Adventure"
+    },
+    {
+      "id": 28,
+      "name": "Action"
+    },
+    {
+      "id": 878,
+      "name": "Science Fiction"
+    }
+  ],
+  "homepage": "http://www.starwars.com/films/star-wars-episode-iv-a-new-hope",
+  "id": 11,
+  "imdb_id": "tt0076759",
+  "original_language": "en",
+  "original_title": "Star Wars",
+  "overview": "Princess Leia is captured and held hostage by the evil Imperial forces in their effort to take over the galactic Empire. Venturesome Luke Skywalker and dashing captain Han Solo team together with the loveable robot duo R2-D2 and C-3PO to rescue the beautiful princess and restore peace and justice in the Empire.",
+  "popularity": 33.809,
+  "poster_path": "/btTdmkgIvOi0FFip1sPuZI2oQG6.jpg",
+  "production_companies": [
+    {
+      "id": 1,
+      "logo_path": "/o86DbpburjxrqAzEDhXZcyE8pDb.png",
+      "name": "Lucasfilm",
+      "origin_country": "US"
+    },
+    {
+      "id": 25,
+      "logo_path": "/qZCc1lty5FzX30aOCVRBLzaVmcp.png",
+      "name": "20th Century Fox",
+      "origin_country": "US"
+    }
+  ],
+  "production_countries": [
+    {
+      "iso_3166_1": "US",
+      "name": "United States of America"
+    }
+  ],
+  "release_date": "1977-05-25",
+  "revenue": 775398007,
+  "runtime": 121,
+  "spoken_languages": [
+    {
+      "iso_639_1": "en",
+      "name": "English"
+    }
+  ],
+  "status": "Released",
+  "tagline": "A long time ago in a galaxy far, far away...",
+  "title": "Star Wars",
+  "video": false,
+  "vote_average": 8.2,
+  "vote_count": 12918,
+  "alternative_titles": {
+    "titles": [
+      {
+        "iso_3166_1": "AU",
+        "title": "Star Wars DSE: Episode IV - A New Hope",
+        "type": "Despecialised Edition"
+      },
+      {
+        "iso_3166_1": "AU",
+        "title": "Star Wars Episode IV A New Hope - DE",
+        "type": "Despecialized Edition"
+      },
+      {
+        "iso_3166_1": "AU",
+        "title": "Star Wars Episode IV A New Hope - OP",
+        "type": "Original Print"
+      },
+      {
+        "iso_3166_1": "AU",
+        "title": "Star Wars SSE: Episode IV - A New Hope",
+        "type": "Silver Screen Edition"
+      },
+      {
+        "iso_3166_1": "AU",
+        "title": "Star Wars: Episode IV - A New Hope",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "BR",
+        "title": "Guerra nas Estrelas",
+        "type": "First release title"
+      },
+      {
+        "iso_3166_1": "BR",
+        "title": "Star Wars 4 Uma Nova Esperança",
+        "type": "Collection"
+      },
+      {
+        "iso_3166_1": "BR",
+        "title": "Star Wars: Episódio IV - Uma Nova Esperança",
+        "type": "Título em Português"
+      },
+      {
+        "iso_3166_1": "BR",
+        "title": "Star Wars: Uma Nova Esperança",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "CA",
+        "title": "Star Wars : Épisode IV - Un nouvel espoir",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "CH",
+        "title": "Star Wars: Episode IV - Eine neue Hoffnung",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "CZ",
+        "title": "Hvězdné války: Epizoda IV - Nová naděje",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "DE",
+        "title": "Star Wars - Episode IV - Krieg der Sterne",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "DE",
+        "title": "Star Wars: Episode IV – Eine neue Hoffnung",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "DK",
+        "title": "Star Wars Episode IV - A New Hope",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "DK",
+        "title": "Star Wars: Episode IV - Et nyt håb",
+        "type": "reissue title"
+      },
+      {
+        "iso_3166_1": "DK",
+        "title": "Stjernekrigen",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "ES",
+        "title": "Star Wars: Episodio IV - Una nueva esperanza",
+        "type": "reissue title"
+      },
+      {
+        "iso_3166_1": "ES",
+        "title": "Star Wars: Una Nueva Esperanza",
+        "type": "modern title"
+      },
+      {
+        "iso_3166_1": "FI",
+        "title": "Star Wars: Episodi IV - Uusi toivo",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "FR",
+        "title": "La Guerre des étoiles",
+        "type": "1977 title"
+      },
+      {
+        "iso_3166_1": "FR",
+        "title": "Star Wars, épisode IV - Un nouvel espoir",
+        "type": "modern title"
+      },
+      {
+        "iso_3166_1": "GR",
+        "title": "Ο Πόλεμος Των Άστρων Μια Νέα Ελπίδα",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "GR",
+        "title": "Ο Πόλεμος Των Άστρων: Επεισόδιο 4 - Μια Νέα Ελπίδα",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "HU",
+        "title": "Star Wars: IV. rész - Egy új remény",
+        "type": "új cím/new title"
+      },
+      {
+        "iso_3166_1": "IT",
+        "title": "Guerre stellari",
+        "type": "1977 title"
+      },
+      {
+        "iso_3166_1": "IT",
+        "title": "Guerre stellari (Episodio IV)",
+        "type": "modern title"
+      },
+      {
+        "iso_3166_1": "IT",
+        "title": "Star Wars - Episodio IV - Una Nuova Speranza",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "IT",
+        "title": "Star Wars - Guerre stellari",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "JP",
+        "title": "スター・ウォーズ エピソード４／新たなる希望",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "JP",
+        "title": "スター・ウォーズ",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "KR",
+        "title": "스타 워즈 에피소드 4: 새로운 희망",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "KR",
+        "title": "스타워즈 에피소드4 새로운 희망",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "MY",
+        "title": "Star Wars Episode IV - A New Hope (1977)",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "PT",
+        "title": "A Guerra das Estrelas",
+        "type": "Alternative Title"
+      },
+      {
+        "iso_3166_1": "RU",
+        "title": "звездные войны 4",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "SE",
+        "title": "Star Wars: Episod IV – Nytt hopp",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "SE",
+        "title": "Stjärnornas Krig",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "TR",
+        "title": "Yıldız Savaşları 4",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "TR",
+        "title": "Yıldız Savaşları: Bölüm IV - Yeni Bir Umut",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "TR",
+        "title": "Yıldız Savaşları: Yeni Ümit",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "TW",
+        "title": "星際大戰四部曲：曙光乍現",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "US",
+        "title": "Adventures of the Starkiller: Episode 1 - The Star Wars",
+        "type": "working title"
+      },
+      {
+        "iso_3166_1": "US",
+        "title": "Star Wars 4K77",
+        "type": ""
+      },
+      {
+        "iso_3166_1": "US",
+        "title": "Star Wars Episode IV : A New Hope - Despecialized Edition",
+        "type": "Despecialized Edition"
+      },
+      {
+        "iso_3166_1": "US",
+        "title": "Star Wars: A New Hope",
+        "type": "with subtitle"
+      },
+      {
+        "iso_3166_1": "US",
+        "title": "Star Wars: Episode IV - A New Hope",
+        "type": "modern title"
+      },
+      {
+        "iso_3166_1": "US",
+        "title": "The Adventures of Luke Starkiller as Taken from the 'Journal of the Whills': Saga I - Star Wars",
+        "type": "working title"
+      },
+      {
+        "iso_3166_1": "US",
+        "title": "The Star Wars",
+        "type": "original script title"
+      },
+      {
+        "iso_3166_1": "US",
+        "title": "The Star Wars: From the Adventures of Luke Starkiller",
+        "type": "working title"
+      }
+    ]
+  },
+  "keywords": {
+    "keywords": [
+      {
+        "id": 803,
+        "name": "android"
+      },
+      {
+        "id": 4270,
+        "name": "galaxy"
+      },
+      {
+        "id": 4271,
+        "name": "hermit"
+      },
+      {
+        "id": 10013,
+        "name": "death star"
+      },
+      {
+        "id": 10016,
+        "name": "lightsaber"
+      },
+      {
+        "id": 10527,
+        "name": "jedi"
+      },
+      {
+        "id": 11107,
+        "name": "rescue mission"
+      },
+      {
+        "id": 11195,
+        "name": "empire"
+      },
+      {
+        "id": 11196,
+        "name": "rebellion"
+      },
+      {
+        "id": 13194,
+        "name": "planet"
+      },
+      {
+        "id": 155336,
+        "name": "smuggler"
+      },
+      {
+        "id": 160134,
+        "name": "the force"
+      },
+      {
+        "id": 161176,
+        "name": "space opera"
+      },
+      {
+        "id": 163295,
+        "name": "galactic war"
+      },
+      {
+        "id": 178710,
+        "name": "stormtrooper"
+      },
+      {
+        "id": 178712,
+        "name": "totalitarianism"
+      }
+    ]
+  },
+  "external_ids": {
+    "imdb_id": "tt0076759",
+    "facebook_id": "StarWars",
+    "instagram_id": "starwars",
+    "twitter_id": "starwars"
+  },
+  "images": {
+    "backdrops": [],
+    "posters": []
+  }
+}

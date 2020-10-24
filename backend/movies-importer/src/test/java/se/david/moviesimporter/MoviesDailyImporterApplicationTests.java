@@ -25,7 +25,7 @@ import com.github.tomakehurst.wiremock.client.WireMock;
 		classes = MoviesImporterApplication.class)
 @ExtendWith(SpringExtension.class)
 @AutoConfigureWireMock(port = 9999)
-class MoviesImporterApplicationTests {
+class MoviesDailyImporterApplicationTests {
 	@Autowired
 	private WebTestClient webClient;
 
@@ -44,11 +44,45 @@ class MoviesImporterApplicationTests {
 	}
 
 	@Test
+	void importProductionCompaniesTwice() throws IOException {
+		ClassPathResource resource = new ClassPathResource("production_companies.json.gz");
+
+		String url = "/p/exports/production_company_ids_.*.json.gz";
+		stubEndpoint(resource, url);
+
+		webClient.get().uri("/import/production-companies")
+				.exchange()
+				.expectStatus().is2xxSuccessful();
+
+		webClient.get().uri("/import/production-companies")
+				.exchange()
+				.expectStatus().is2xxSuccessful();
+	}
+
+	@Test
 	void importKeywordIds() throws IOException {
 		ClassPathResource resource = new ClassPathResource("keywords.json.gz");
 
 		String url = "/p/exports/keyword_ids_.*.json.gz";
 		stubEndpoint(resource, url);
+
+		webClient.get().uri("/import/keyword-ids")
+				.exchange()
+				.expectStatus().is2xxSuccessful();
+
+		verify(WireMock.getRequestedFor(WireMock.urlMatching(url)));
+	}
+
+	@Test
+	void importKeywordIdsTwice() throws IOException {
+		ClassPathResource resource = new ClassPathResource("keywords.json.gz");
+
+		String url = "/p/exports/keyword_ids_.*.json.gz";
+		stubEndpoint(resource, url);
+
+		webClient.get().uri("/import/keyword-ids")
+				.exchange()
+				.expectStatus().is2xxSuccessful();
 
 		webClient.get().uri("/import/keyword-ids")
 				.exchange()

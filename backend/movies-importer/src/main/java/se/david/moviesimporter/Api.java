@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
 import se.david.moviesimporter.domain.Keyword;
 import se.david.moviesimporter.domain.Movie;
 import se.david.moviesimporter.domain.Person;
@@ -16,25 +19,25 @@ import se.david.moviesimporter.domain.ProductionCompany;
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public class Api {
 	@Autowired
-	private Importer importer;
+	private DailyImporter dailyImporter;
 
-	@GetMapping(path = "/import/production-companies")
-	Flux<ProductionCompany> productionCompanies() {
-		return importer.getProductionCompanyIds();
+	@GetMapping(path = "/import/production-companies", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	Flux<String> productionCompanies() {
+		return dailyImporter.getProductionCompanyIds();
 	}
 
-	@GetMapping(path = "/import/keyword-ids")
-	Flux<Keyword> keywordIds() {
-		return importer.getKeywordIds();
+	@GetMapping(path = "/import/keyword-ids", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	Flux<String> keywordIds() {
+		return dailyImporter.getKeywordIds();
 	}
 
-	@GetMapping(path = "/import/movie-ids")
-	Flux<Movie> movieIds() {
-		return importer.getMovieIds();
+	@GetMapping(path = "/import/movie-ids", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	Flux<String> movieIds() {
+		return dailyImporter.getMovieIds();
 	}
 
-	@GetMapping(path = "/import/person-ids")
-	Flux<Person> personIds() {
-		return importer.getPersonIds();
+	@GetMapping(path = "/import/person-ids", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+	Flux<String> personIds() {
+		return dailyImporter.getPersonIds();
 	}
 }
