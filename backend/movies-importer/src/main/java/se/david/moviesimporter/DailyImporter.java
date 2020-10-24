@@ -6,8 +6,10 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import se.david.moviesimporter.domain.Keyword;
 import se.david.moviesimporter.domain.Movie;
+import se.david.moviesimporter.domain.Person;
 import se.david.moviesimporter.domain.ProductionCompany;
 import se.david.moviesimporter.repository.KeywordRepository;
 import se.david.moviesimporter.repository.MovieRepository;
@@ -69,6 +72,12 @@ public class DailyImporter {
 				.map(JsonMapper.mapProductionCompany())
 				.filter(Objects::nonNull)
 				.buffer(buffer)
+				.map(a -> {
+					List<ProductionCompany> found = productionCompanyRepository.findAllById(a.stream().map(ProductionCompany::getId).collect(Collectors.toList()));
+					return a.stream()
+							.filter(b -> !found.contains(b))
+							.collect(Collectors.toList());
+				})
 				.flatMap(productionCompanies -> Flux.fromIterable(productionCompanyRepository.saveAllWithTransaction(productionCompanies)))
 				.buffer(buffer)
 				.filter(a -> counter.addAndGet(buffer) % 10_000 == 0)
@@ -91,6 +100,12 @@ public class DailyImporter {
 				.map(JsonMapper.mapKeyword())
 				.filter(Objects::nonNull)
 				.buffer(buffer)
+				.map(a -> {
+					List<Keyword> found = keywordRepository.findAllById(a.stream().map(Keyword::getId).collect(Collectors.toList()));
+					return a.stream()
+							.filter(b -> !found.contains(b))
+							.collect(Collectors.toList());
+				})
 				.flatMap(keywords -> Flux.fromIterable(keywordRepository.saveAllWithTransaction(keywords)))
 				.buffer(buffer)
 				.filter(a -> counter.addAndGet(buffer) % 10_000 == 0)
@@ -114,6 +129,12 @@ public class DailyImporter {
 				.filter(Objects::nonNull)
 				.filter(person -> !person.isAdult())
 				.buffer(buffer)
+				.map(a -> {
+					List<Person> found = personRepository.findAllById(a.stream().map(Person::getId).collect(Collectors.toList()));
+					return a.stream()
+							.filter(b -> !found.contains(b))
+							.collect(Collectors.toList());
+				})
 				.flatMap(persons -> Flux.fromIterable(personRepository.saveAllWithTransaction(persons)))
 				.buffer(buffer)
 				.filter(a -> counter.addAndGet(buffer) % 10_000 == 0)
@@ -137,6 +158,12 @@ public class DailyImporter {
 				.filter(Objects::nonNull)
 				.filter(movie -> !movie.isAdult())
 				.buffer(buffer)
+				.map(a -> {
+					List<Movie> found = movieRepository.findAllById(a.stream().map(Movie::getId).collect(Collectors.toList()));
+					return a.stream()
+							.filter(b -> !found.contains(b))
+							.collect(Collectors.toList());
+				})
 				.flatMap(movies -> Flux.fromIterable(movieRepository.saveAllWithTransaction(movies)), 5)
 				.buffer(buffer)
 				.filter(a -> counter.addAndGet(buffer) % 10_000 == 0)

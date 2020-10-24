@@ -24,6 +24,19 @@ public class Movie {
 	private String originalTitle;
 	private double popularity;
 	private boolean video;
+	private boolean processed;
+
+	public Movie() {
+	}
+
+	public Movie(long id, boolean adult, String originalTitle, double popularity, boolean video, boolean processed) {
+		this.id = id;
+		this.adult = adult;
+		this.originalTitle = originalTitle;
+		this.popularity = popularity;
+		this.video = video;
+		this.processed = processed;
+	}
 
 	public long getId() {
 		return id;
@@ -63,6 +76,14 @@ public class Movie {
 
 	public void setVideo(boolean video) {
 		this.video = video;
+	}
+
+	public boolean isProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(boolean processed) {
+		this.processed = processed;
 	}
 
 	@Override

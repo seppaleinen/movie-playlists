@@ -17,15 +17,17 @@ public class Person {
 	private boolean adult;
 	private String name;
 	private double popularity;
+	private boolean processed;
 
 	public Person() {
 	}
 
-	public Person(long id, boolean adult, String name, double popularity) {
+	public Person(long id, boolean adult, String name, double popularity, boolean processed) {
 		this.id = id;
 		this.adult = adult;
 		this.name = name;
 		this.popularity = popularity;
+		this.processed = processed;
 	}
 
 	public long getId() {
@@ -60,6 +62,14 @@ public class Person {
 		this.popularity = popularity;
 	}
 
+	public boolean isProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(boolean processed) {
+		this.processed = processed;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
@@ -84,6 +94,7 @@ public class Person {
 				", adult=" + adult +
 				", name='" + name + '\'' +
 				", popularity=" + popularity +
+				", processed=" + processed +
 				'}';
 	}
 }

@@ -10,6 +10,7 @@ public class ProductionCompany {
 	@Id
 	private long id;
 	private String name;
+	private boolean processed;
 
 	public long getId() {
 		return id;
@@ -25,6 +26,14 @@ public class ProductionCompany {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public boolean isProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(boolean processed) {
+		this.processed = processed;
 	}
 
 	@Override

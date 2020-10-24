@@ -13,6 +13,16 @@ public class Keyword {
 	@Id
 	private long id;
 	private String name;
+	private boolean processed;
+
+	public Keyword() {
+	}
+
+	public Keyword(long id, String name, boolean processed) {
+		this.id = id;
+		this.name = name;
+		this.processed = processed;
+	}
 
 	public long getId() {
 		return id;
@@ -28,6 +38,14 @@ public class Keyword {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public boolean isProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(boolean processed) {
+		this.processed = processed;
 	}
 
 	@Override
